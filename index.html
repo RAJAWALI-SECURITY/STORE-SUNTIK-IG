@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAFZ STORE - Premium Social Media Services</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- CSS VARIABLES & THEME --- */
+        :root {
+            --bg-dark: #0f0c29;
+            --bg-gradient: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            --primary-accent: #ff00cc;
+            --secondary-accent: #333399;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --text-main: #ffffff;
+            --text-muted: #b3b3b3;
+            --neon-glow: 0 0 15px rgba(255, 0, 204, 0.6);
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            --error-color: #ff4757;
+            --success-color: #00d2d3;
+            --discord-color: #5865F2;
+            --wa-color: #25d366;
+        }
+
+        /* --- RESET & BASE STYLES --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background: var(--bg-dark);
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        body::before, body::after {
+            content: ''; position: absolute; width: 400px; height: 400px;
+            border-radius: 50%; filter: blur(80px); z-index: -1;
+            animation: float 10s infinite alternate;
+        }
+        body::before { background: #ff00cc; top: -100px; left: -100px; }
+        body::after { background: #333399; bottom: -100px; right: -100px; animation-delay: -5s; }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(50px, 50px); }
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- NAVBAR --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 5%; width: 100%; top: 0; z-index: 1000;
+            position: fixed; backdrop-filter: blur(10px);
+            background: rgba(15, 12, 41, 0.7); border-bottom: 1px solid var(--glass-border);
+        }
+
+        .logo {
+            font-size: 1.8rem; font-weight: 800; letter-spacing: 1px;
+            background: linear-gradient(to right, #fff, #ff00cc);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-transform: uppercase;
+        }
+
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a {
+            font-weight: 500; font-size: 0.95rem; color: var(--text-muted); transition: var(--transition);
+        }
+        .nav-links a:hover { color: #fff; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            padding: 160px 20px 100px; text-align: center; max-width: 800px; margin: 0 auto;
+        }
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; }
+        .hero h1 span { color: var(--primary-accent); text-shadow: var(--neon-glow); }
+        .hero p { font-size: 1.1rem; color: var(--text-muted); margin-bottom: 40px; }
+
+        .btn-hero {
+            background: transparent; color: #fff; padding: 15px 40px; border-radius: 50px;
+            border: 2px solid var(--primary-accent); font-weight: 700; font-size: 1rem;
+            transition: var(--transition); display: inline-block; box-shadow: 0 0 10px rgba(255, 0, 204, 0.2);
+        }
+        .btn-hero:hover { background: var(--primary-accent); box-shadow: 0 0 30px var(--primary-accent); transform: scale(1.05); }
+
+        /* --- SECTION STYLES --- */
+        section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+        
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .badge {
+            display: inline-block; padding: 8px 20px; border-radius: 20px; font-size: 0.8rem;
+            font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 15px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+        }
+        .badge.indo { color: #ff6b6b; border-color: #ff6b6b; }
+        .badge.global { color: #4ecdc4; border-color: #4ecdc4; }
+        .badge.lain { color: #ffe66d; border-color: #ffe66d; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 10px; }
+
+        /* --- GRID & CARDS --- */
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+
+        .card {
+            background: var(--glass-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border); border-radius: 20px; padding: 40px 30px;
+            text-align: center; transition: var(--transition); position: relative; overflow: hidden;
+            display: flex; flex-direction: column; height: 100%;
+        }
+        .card:hover { transform: translateY(-10px); background: rgba(255, 255, 255, 0.1); box-shadow: 0 15px 35px rgba(0,0,0,0.5); }
+
+        .icon-box {
+            width: 80px; height: 80px; background: rgba(255,255,255,0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; margin: 0 auto 25px;
+            font-size: 2rem; color: #fff; border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; font-weight: 600; }
+        
+        .unit-price {
+            font-size: 1rem; color: var(--text-muted); margin-bottom: 25px; display: block;
+            font-weight: 500;
+        }
+
+        /* --- INPUT STYLES --- */
+        .input-group {
+            background: rgba(0,0,0,0.3); border-radius: 12px; padding: 15px;
+            margin-bottom: 15px; border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .input-label {
+            display: block; text-align: left; font-size: 0.8rem; color: var(--text-muted);
+            margin-bottom: 8px; font-weight: 600;
+        }
+
+        .qty-input {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid #444; color: #fff;
+            padding: 12px; border-radius: 8px; font-size: 1.1rem; font-family: 'Outfit', sans-serif;
+            outline: none; transition: 0.3s;
+        }
+
+        .qty-input:focus { border-color: var(--primary-accent); box-shadow: 0 0 10px rgba(255, 0, 204, 0.3); }
+        
+        .min-text {
+            display: block; text-align: left; font-size: 0.75rem; color: var(--text-muted);
+            margin-top: 5px; font-style: italic;
+        }
+
+        /* --- DYNAMIC PRICE DISPLAY --- */
+        .price-display-box {
+            margin-bottom: 20px;
+            padding: 10px;
+            background: rgba(0, 210, 211, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(0, 210, 211, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .price-display-box.visible { opacity: 1; }
+
+        .total-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .total-amount {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--success-color);
+            text-shadow: 0 0 10px rgba(0, 210, 211, 0.4);
+        }
+
+        /* --- ERROR --- */
+        .error-msg {
+            color: var(--error-color); font-size: 0.8rem; margin-top: 5px;
+            display: none; text-align: left;
+        }
+        .input-group.error .qty-input { border-color: var(--error-color); }
+        .input-group.error .error-msg { display: block; }
+
+        /* --- BUTTON --- */
+        .btn-card {
+            width: 100%; padding: 15px; border-radius: 12px; border: none;
+            background: linear-gradient(45deg, #333399, #ff00cc); color: white;
+            font-weight: 700; font-size: 1rem; cursor: pointer; transition: var(--transition);
+            text-transform: uppercase; letter-spacing: 1px; margin-top: auto;
+        }
+        .btn-card:hover { filter: brightness(1.2); box-shadow: 0 0 20px rgba(51, 51, 153, 0.6); }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; padding: 50px 20px; border-top: 1px solid var(--glass-border); margin-top: 50px; }
+        footer p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- FLOATING ICONS --- */
+        
+        /* 1. Discord (Bottom Left) */
+        .float-discord {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: var(--discord-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            box-shadow: 0 5px 20px rgba(88, 101, 242, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        .float-discord:hover {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 0 30px rgba(88, 101, 242, 0.8);
+        }
+
+        /* 2. WA Testimoni (Bottom Right) */
+        .float-wa-testimoni {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--wa-color);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 5px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1001;
+            transition: var(--transition);
+        }
+        .float-wa-testimoni:hover {
+            transform: scale(1.1) rotate(-10deg);
+            box-shadow: 0 0 30px rgba(37, 211, 102, 0.8);
+        }
+
+        /* --- TOAST --- */
+        .toast-container {
+            position: fixed; top: 100px; right: 20px; z-index: 2000;
+        }
+        .toast {
+            background: rgba(40, 40, 60, 0.95); backdrop-filter: blur(10px);
+            color: white; padding: 15px 25px; border-radius: 10px; margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); border-left: 4px solid var(--primary-accent);
+            display: flex; align-items: center; gap: 10px; transform: translateX(120%);
+            transition: transform 0.4s ease;
+        }
+        .toast.show { transform: translateX(0); }
+        .toast.error { border-left-color: var(--error-color); }
+        .toast i { font-size: 1.2rem; }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            nav { flex-direction: column; gap: 15px; }
+            .nav-links { gap: 15px; font-size: 0.9rem; }
+            /* Responsive Floating Icons */
+            .float-discord, .float-wa-testimoni { bottom: 20px; width: 50px; height: 50px; font-size: 24px; }
+            .float-discord { left: 20px; }
+            .float-wa-testimoni { right: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">RAFZ STORE</div>
+        <div class="nav-links">
+            <a href="#indo">Indo</a>
+            <a href="#global">Global</a>
+            <a href="#lainnya">Lainnya</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>SOLUSI <span>SOSIAL MEDIA</span><br>LEVEL TERTINGGI</h1>
+        <p>Tingkatkan eksistensi digital Anda dengan layanan Followers, Likes, dan Views berkualitas premium. Cepat, Aman, dan Bergaransi.</p>
+        <a href="#indo" class="btn-hero">Lihat Paket</a>
+    </div>
+
+    <!-- Kategori Indonesia -->
+    <section id="indo">
+        <div class="section-header">
+            <span class="badge indo">KATEGORI INDONESIA</span>
+            <h2>Jangkauan Pasar Lokal</h2>
+        </div>
+
+        <div class="grid">
+            <!-- Followers Indo -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-user-plus"></i></div>
+                <h3>Followers Indo</h3>
+                <span class="unit-price">Rp 15.000 per 100</span>
+                
+                <div class="input-group">
+                    <label class="input-label">Jumlah Pesanan</label>
+                    <input type="number" class="qty-input" 
+                           data-base-price="15000" data-base-qty="100"
+                           min="100" placeholder="Min: 100" value="100" oninput="calculatePrice(this)">
+                    <span class="min-text">Minimal pembelian: 100</span>
+                    <div class="error-msg">Jumlah tidak boleh kurang dari 100!</div>
+                </div>
+
+                <div class="price-display-box visible" id="price-display-1">
+                    <span class="total-label">Total Estimasi</span>
+                    <span class="total-amount">Rp 15.000</span>
+                </div>
+
+                <button class="btn-card" onclick="processOrder(this, 'Followers Indo')">Pesan Sekarang</button>
+            </div>
+
+            <!-- Likes Indo -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-heart"></i></div>
+                <h3>Likes Indo</h3>
+                <span class="unit-price">Rp 30.000 per 1.000</span>
+                
+                <div class="input-group">
+                    <label class="input-label">Jumlah Pesanan</label>
+                    <input type="number" class="qty-input" 
+                           data-base-price="30000" data-base-qty="1000"
+                           min="1000" placeholder="Min: 1.000" value="1000" oninput="calculatePrice(this)">
+                    <span class="min-text">Minimal pembelian: 1.000</span>
+                    <div class="error-msg">Jumlah tidak boleh kurang dari 1.000!</div>
+                </div>
+
+                <div class="price-display-box visible" id="price-display-2">
+                    <span class="total-label">Total Estimasi</span>
+                    <span class="total-amount">Rp 30.000</span>
+                </div>
+
+                <button class="btn-card" onclick="processOrder(this, 'Likes Indo')">Pesan Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kategori Global -->
+    <section id="global">
+        <div class="section-header">
+            <span class="badge global">GLOBAL LUAR NEGERI</span>
+            <h2>Jangkauan Internasional</h2>
+        </div>
+
+        <div class="grid">
+            <!-- Followers Global -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-globe"></i></div>
+                <h3>Followers Global</h3>
+                <span class="unit-price">Rp 12.000 per 100</span>
+                
+                <div class="input-group">
+                    <label class="input-label">Jumlah Pesanan</label>
+                    <input type="number" class="qty-input" 
+                           data-base-price="12000" data-base-qty="100"
+                           min="100" placeholder="Min: 100" value="100" oninput="calculatePrice(this)">
+                    <span class="min-text">Minimal pembelian: 100</span>
+                    <div class="error-msg">Jumlah tidak boleh kurang dari 100!</div>
+                </div>
+
+                <div class="price-display-box visible" id="price-display-3">
+                    <span class="total-label">Total Estimasi</span>
+                    <span class="total-amount">Rp 12.000</span>
+                </div>
+
+                <button class="btn-card" onclick="processOrder(this, 'Followers Global')">Pesan Sekarang</button>
+            </div>
+
+            <!-- Likes Global -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-globe-americas"></i></div>
+                <h3>Likes Global</h3>
+                <span class="unit-price">Rp 12.000 per 1.000</span>
+                
+                <div class="input-group">
+                    <label class="input-label">Jumlah Pesanan</label>
+                    <input type="number" class="qty-input" 
+                           data-base-price="12000" data-base-qty="1000"
+                           min="1000" placeholder="Min: 1.000" value="1000" oninput="calculatePrice(this)">
+                    <span class="min-text">Minimal pembelian: 1.000</span>
+                    <div class="error-msg">Jumlah tidak boleh kurang dari 1.000!</div>
+                </div>
+
+                <div class="price-display-box visible" id="price-display-4">
+                    <span class="total-label">Total Estimasi</span>
+                    <span class="total-amount">Rp 12.000</span>
+                </div>
+
+                <button class="btn-card" onclick="processOrder(this, 'Likes Global')">Pesan Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kategori Lainnya -->
+    <section id="lainnya">
+        <div class="section-header">
+            <span class="badge lain">FITUR LAINNYA</span>
+            <h2>Penunjang Viral</h2>
+        </div>
+
+        <div class="grid" style="justify-content: center;">
+            <!-- Views -->
+            <div class="card">
+                <div class="icon-box"><i class="fas fa-eye"></i></div>
+                <h3>Instagram Views</h3>
+                <span class="unit-price">Rp 15.000 per 5.000</span>
+                
+                <div class="input-group">
+                    <label class="input-label">Jumlah Pesanan</label>
+                    <input type="number" class="qty-input" 
+                           data-base-price="15000" data-base-qty="5000"
+                           min="5000" placeholder="Min: 5.000" value="5000" oninput="calculatePrice(this)">
+                    <span class="min-text">Minimal pembelian: 5.000</span>
+                    <div class="error-msg">Jumlah tidak boleh kurang dari 5.000!</div>
+                </div>
+
+                <div class="price-display-box visible" id="price-display-5">
+                    <span class="total-label">Total Estimasi</span>
+                    <span class="total-amount">Rp 15.000</span>
+                </div>
+
+                <button class="btn-card" onclick="processOrder(this, 'Instagram Views')">Pesan Sekarang</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <h3 class="logo" style="font-size: 1.5rem; margin-bottom: 15px;">RAFZ STORE</h3>
+        <p>&copy; 2023 Rafz Store. Premium Digital Services.</p>
+    </footer>
+
+    <!-- Floating Discord Button (Kiri Bawah) -->
+    <a href="https://discord.gg/d3JGbarhqf" target="_blank" class="float-discord" title="Join Discord Komunitas">
+        <i class="fab fa-discord"></i>
+    </a>
+
+    <!-- Floating WA Testimoni Button (Kanan Bawah) -->
+    <a href="https://whatsapp.com/channel/0029Vb8B2Jj59Pwb3qo7553d" target="_blank" class="float-wa-testimoni" title="Lihat Saluran Testimoni">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // --- KONFIGURASI NOMOR WA ---
+        const whatsappNumber = "6281959369040"; 
+        const testimonialLink = "https://whatsapp.com/channel/0029Vb8B2Jj59Pwb3qo7553d";
+
+        // --- FUNGSI KALKULASI HARGA REAL-TIME ---
+        function calculatePrice(inputElement) {
+            const card = inputElement.closest('.card');
+            const priceBox = card.querySelector('.price-display-box');
+            const totalAmountEl = priceBox.querySelector('.total-amount');
+            const inputGroup = card.querySelector('.input-group');
+
+            const basePrice = parseFloat(inputElement.getAttribute('data-base-price'));
+            const baseQty = parseFloat(inputElement.getAttribute('data-base-qty'));
+            const min = parseFloat(inputElement.min);
+            const qty = parseFloat(inputElement.value);
+
+            if (!isNaN(qty) && qty < min) {
+                inputGroup.classList.add('error');
+                totalAmountEl.innerText = "-";
+                totalAmountEl.style.color = "var(--text-muted)";
+                return;
+            } else {
+                inputGroup.classList.remove('error');
+            }
+
+            if (!isNaN(qty) && qty > 0) {
+                const totalPrice = (qty / baseQty) * basePrice;
+                const formattedPrice = "Rp " + Math.floor(totalPrice).toLocaleString('id-ID');
+                
+                totalAmountEl.innerText = formattedPrice;
+                totalAmountEl.style.color = "var(--success-color)";
+                priceBox.classList.add('visible');
+            } else {
+                totalAmountEl.innerText = "Rp 0";
+            }
+        }
+
+        // --- FUNGSI PEMESANAN ---
+        function processOrder(btnElement, productName) {
+            const card = btnElement.closest('.card');
+            const input = card.querySelector('.qty-input');
+            const priceDisplay = card.querySelector('.total-amount').innerText;
+            const inputGroup = card.querySelector('.input-group');
+            
+            const qty = parseInt(input.value);
+            const min = parseInt(input.min);
+
+            if (isNaN(qty) || qty < min) {
+                inputGroup.classList.add('error');
+                showToast(`Minimal pesanan adalah ${min}`, 'error');
+                
+                input.addEventListener('input', function() {
+                    inputGroup.classList.remove('error');
+                }, {once: true});
+                return;
+            }
+
+            const formattedQty = qty.toLocaleString('id-ID');
+            const mandatoryFooter = `JANGAN LUPA JOIN SALURAN TESTIMONI ${testimonialLink}`;
+
+            const message = `Halo Admin Rafz Store, saya ingin pesan:
+
+1. Nama Paket: *${productName}*
+2. Jumlah Paket: *${formattedQty}*
+3. Total Harga: *${priceDisplay}*
+
+ ${mandatoryFooter}`;
+
+            const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
+            
+            showToast('Mengarahkan ke WhatsApp...', 'success');
+            setTimeout(() => {
+                window.open(url, '_blank');
+            }, 1000);
+        }
+
+        // --- FUNGSI TOAST NOTIFICATION ---
+        function showToast(text, type) {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            
+            let icon = type === 'error' ? '<i class="fas fa-exclamation-circle"></i>' : '<i class="fas fa-check-circle"></i>';
+            
+            toast.innerHTML = `${icon} <span>${text}</span>`;
+            container.appendChild(toast);
+            
+            requestAnimationFrame(() => { toast.classList.add('show'); });
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => { toast.remove(); }, 400);
+            }, 3000);
+        }
+
+        window.onload = function() {
+            document.querySelectorAll('.qty-input').forEach(input => {
+                calculatePrice(input);
+            });
+        }
+    </script>
+</body>
+</html>
